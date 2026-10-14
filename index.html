@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101b2b">
+<meta name="description" content="A beautiful offline-friendly sermon notebook and Bible reader.">
+<link rel="manifest" href="manifest.json">
+<title>Selah — Sermon Notes & Bible</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+:root{--bg:#0b1220;--panel:#121d2e;--panel2:#172438;--line:#26364b;--text:#f4f0e8;--muted:#a4b1c3;--gold:#d9b779;--gold2:#f0d8a7;--green:#91b7a0;--danger:#f0a3a3;--shadow:0 16px 50px #0003}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#1a2a40 0,transparent 45%),var(--bg);color:var(--text);font-family:'DM Sans',system-ui,sans-serif;min-height:100vh}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 24px;border-bottom:1px solid var(--line);background:#0b1220dd;position:sticky;top:0;z-index:5;backdrop-filter:blur(14px)}
+.brand{display:flex;align-items:center;gap:12px}.brand-mark{display:grid;place-items:center;width:42px;height:42px;border:1px solid #8c754d;border-radius:14px;color:var(--gold2);font-size:22px;background:linear-gradient(145deg,#27354a,#111b2a)}h1{font:600 22px 'Playfair Display',Georgia,serif;margin:0;letter-spacing:.3px}.subtitle{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.header-right{display:flex;align-items:center;gap:10px}.status{font-size:12px;color:var(--green);display:flex;align-items:center;gap:7px}.dot{width:7px;height:7px;background:var(--green);border-radius:50%}
+.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:11px;padding:10px 13px;font-size:13px;font-weight:600;transition:.2s}.btn:hover{border-color:var(--gold);transform:translateY(-1px)}.btn.gold{background:var(--gold);border-color:var(--gold);color:#1a1b1c}.btn.small{padding:7px 10px;font-size:12px}
+main{max-width:1600px;margin:auto;padding:22px;display:grid;grid-template-columns:minmax(0,1fr) minmax(350px,.9fr);gap:20px;align-items:start}
+.panel{border:1px solid var(--line);background:linear-gradient(160deg,#142033f5,#101a29f5);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;min-width:0}
+.panel-head{padding:19px 20px 15px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}.eyebrow{font-size:10px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:5px}.panel-title{font:600 23px 'Playfair Display',Georgia,serif;margin:0}.muted{color:var(--muted);font-size:12px;line-height:1.5}
+.notes-body{padding:20px}.field-label{display:block;font-size:11px;color:var(--muted);letter-spacing:1.1px;text-transform:uppercase;margin:0 0 8px}.field{width:100%;background:#0c1523;border:1px solid var(--line);border-radius:10px;color:var(--text);padding:12px 13px;outline:none}.field:focus{border-color:var(--gold)}.title-input{font:600 20px 'Playfair Display',Georgia,serif;margin-bottom:15px}.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}.editor{min-height:360px;resize:vertical;line-height:1.85;font-size:15px;padding:17px;background:repeating-linear-gradient(transparent 0,transparent 34px,#ffffff08 35px),#0c1523}.note-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:14px}.action-group{display:flex;gap:8px;flex-wrap:wrap}.save-status{font-size:11px;color:var(--green)}
+.notes-list{padding:0 20px 20px}.saved-heading{display:flex;justify-content:space-between;align-items:center;margin:12px 0}.saved-heading strong{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}.note-list{display:flex;gap:8px;overflow:auto;padding:2px 0 7px}.note-chip{min-width:145px;max-width:200px;text-align:left;border:1px solid var(--line);border-radius:12px;background:#0d1726;color:var(--text);padding:10px}.note-chip.active{border-color:var(--gold);background:#302b22}.note-chip b{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.note-chip span{font-size:10px;color:var(--muted);display:block;margin-top:5px}
+.bible-tools{padding:16px 18px;border-bottom:1px solid var(--line);display:grid;gap:10px}.search-row{display:flex;gap:8px}.search-row .field{min-width:0}.select-row{display:grid;grid-template-columns:1.3fr .7fr;gap:8px}.bible-content{padding:20px;min-height:440px;max-height:calc(100vh - 360px);overflow:auto}.bible-reference{font-size:11px;color:var(--gold);letter-spacing:1.7px;text-transform:uppercase;margin-bottom:8px}.chapter-heading{font:600 28px 'Playfair Display',Georgia,serif;margin:0 0 20px}.verse{font:15px/1.9 'Playfair Display',Georgia,serif;color:#e8e3da;margin:0 0 14px;padding:8px 10px;border-radius:9px;cursor:pointer;border:1px solid transparent}.verse:hover{background:#ffffff08;border-color:#34445a}.verse.selected{background:#d9b77918;border-color:#9f875a}.vnum{font:700 11px 'DM Sans',sans-serif;color:var(--gold);vertical-align:super;margin-right:7px}.verse-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:12px;font-size:13px;line-height:1.7}.notice{margin:0 18px 16px;padding:12px;border:1px solid #64563c;background:#d9b7790d;color:#d7c7a5;border-radius:10px;font-size:11px;line-height:1.6}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#e6d2a8;color:#17202b;border-radius:12px;padding:11px 16px;font-size:13px;font-weight:700;box-shadow:var(--shadow);z-index:10;display:none}.footer{max-width:1600px;margin:0 auto;padding:0 24px 24px;color:#718096;font-size:11px;text-align:center}
+@media(max-width:900px){main{grid-template-columns:1fr;padding:14px}.bible-content{max-height:65vh}.panel-head{padding:16px}.notes-body{padding:15px}header{padding:14px}.status{display:none}}
+@media(max-width:480px){h1{font-size:19px}.subtitle{font-size:9px}.brand-mark{width:36px;height:36px}.header-right .btn{padding:8px}.meta-grid{grid-template-columns:1fr}.panel-title{font-size:21px}.editor{min-height:300px}.panel-head{align-items:flex-start}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><div class="brand-mark">✦</div><div><h1>Selah</h1><div class="subtitle">Sermon notes & scripture</div></div></div>
+  <div class="header-right"><div class="status"><span class="dot"></span><span id="onlineStatus">Ready to work offline</span></div><button class="btn small" id="exportBtn">Export notes</button></div>
+</header>
+<main>
+  <section class="panel">
+    <div class="panel-head"><div><div class="eyebrow">Your notebook</div><h2 class="panel-title">Sermon Notes</h2><div class="muted">Capture the message. Keep the lesson.</div></div><button class="btn gold" id="newNoteBtn">＋ New note</button></div>
+    <div class="notes-body">
+      <label class="field-label" for="noteTitle">Sermon title</label><input id="noteTitle" class="field title-input" placeholder="What is today's message about?">
+      <div class="meta-grid">
+        <div><label class="field-label" for="preacher">Preacher / speaker</label><input id="preacher" class="field" placeholder="Speaker's name"></div>
+        <div><label class="field-label" for="sermonDate">Date</label><input id="sermonDate" class="field" type="date"></div>
+        <div><label class="field-label" for="mainVerse">Main scripture</label><input id="mainVerse" class="field" placeholder="e.g. Romans 8:28"></div>
+        <div><label class="field-label" for="topic">Topic / series</label><input id="topic" class="field" placeholder="Faith, grace, hope…"></div>
+      </div>
+      <label class="field-label" for="noteText">Your notes</label>
+      <textarea id="noteText" class="field editor" spellcheck="true" placeholder="Main point 1…&#10;&#10;What did the preacher explain?&#10;&#10;Verse / illustration / personal application…&#10;&#10;What should I practice this week?"></textarea>
+      <div class="note-actions"><span class="save-status" id="saveStatus">Saved on this device</span><div class="action-group"><button class="btn" id="copyNoteBtn">Copy notes</button><button class="btn gold" id="saveNoteBtn">Save note</button></div></div>
+    </div>
+    <div class="notes-list"><div class="saved-heading"><strong>Saved sermons</strong><span class="muted" id="noteCount">0 notes</span></div><div class="note-list" id="noteList"></div></div>
+  </section>
+  <section class="panel">
+    <div class="panel-head"><div><div class="eyebrow">Read & search</div><h2 class="panel-title">Bible Library</h2><div class="muted" id="bibleSubtitle">Import a Bible file to browse all books offline.</div></div><button class="btn small" id="importBtn">Import Bible</button><input id="bibleFile" type="file" accept=".json,.txt,.csv" hidden></div>
+    <div class="bible-tools">
+      <div class="search-row"><input id="searchInput" class="field" placeholder="Search word or phrase…" aria-label="Search Bible text"><button class="btn gold" id="searchBtn">Search</button></div>
+      <div class="select-row"><select id="bookSelect" class="field" aria-label="Bible book"><option value="">Choose book</option></select><select id="chapterSelect" class="field" aria-label="Chapter"><option value="">Chapter</option></select></div>
+      <div class="action-group"><button class="btn small" id="prevChapter">← Previous</button><button class="btn small" id="nextChapter">Next →</button><button class="btn small" id="clearSearch">Clear search</button></div>
+    </div>
+    <div id="bibleContent" class="bible-content"><div class="empty">Your Bible reader is ready.<br><br>Import a licensed Bible text file to read and search the full text offline. You can also try the included sample verses.</div></div>
+    <div class="notice"><strong>NLT note:</strong> The New Living Translation is copyrighted. This app does not bundle the full NLT text. Import an NLT file only if you have permission to use it. Your imported Bible is stored in this browser on this device.</div>
+  </section>
+</main>
+<div class="footer">Selah · Your notes stay in this browser. Export a backup regularly, especially before clearing browser data.</div>
+<div class="toast" id="toast"></div>
+<script>
+const $ = id => document.getElementById(id);
+const DB_KEY='selah_sermon_notes_v1', BIBLE_KEY='selah_bible_verses_v1', ACTIVE_KEY='selah_active_note_v1';
+const sampleBible=[
+ {book:'Genesis',chapter:1,verse:1,text:'In the beginning God created the heaven and the earth.',translation:'KJV'},
+ {book:'Psalm',chapter:23,verse:1,text:'The LORD is my shepherd; I shall not want.',translation:'KJV'},
+ {book:'Proverbs',chapter:3,verse:5,text:'Trust in the LORD with all thine heart; and lean not unto thine own understanding.',translation:'KJV'},
+ {book:'Isaiah',chapter:41,verse:10,text:'Fear thou not; for I am with thee: be not dismayed; for I am thy God: I will strengthen thee; yea, I will help thee; yea, I will uphold thee with the right hand of my righteousness.',translation:'KJV'},
+ {book:'Matthew',chapter:5,verse:9,text:'Blessed are the peacemakers: for they shall be called the children of God.',translation:'KJV'},
+ {book:'Matthew',chapter:6,verse:33,text:'But seek ye first the kingdom of God, and his righteousness; and all these things shall be added unto you.',translation:'KJV'},
+ {book:'John',chapter:3,verse:16,text:'For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.',translation:'KJV'},
+ {book:'John',chapter:14,verse:6,text:'Jesus saith unto him, I am the way, the truth, and the life: no man cometh unto the Father, but by me.',translation:'KJV'},
+ {book:'Romans',chapter:8,verse:28,text:'And we know that all things work together for good to them that love God, to them who are the called according to his purpose.',translation:'KJV'},
+ {book:'Romans',chapter:12,verse:2,text:'And be not conformed to this world: but be ye transformed by the renewing of your mind, that ye may prove what is that good, and acceptable, and perfect, will of God.',translation:'KJV'},
+ {book:'1 Corinthians',chapter:13,verse:4,text:'Charity suffereth long, and is kind; charity envieth not; charity vaunteth not itself, is not puffed up.',translation:'KJV'},
+ {book:'Philippians',chapter:4,verse:6,text:'Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God.',translation:'KJV'},
+ {book:'Philippians',chapter:4,verse:13,text:'I can do all things through Christ which strengtheneth me.',translation:'KJV'},
+ {book:'2 Timothy',chapter:3,verse:16,text:'All scripture is given by inspiration of God, and is profitable for doctrine, for reproof, for correction, for instruction in righteousness.',translation:'KJV'},
+ {book:'Hebrews',chapter:11,verse:1,text:'Now faith is the substance of things hoped for, the evidence of things not seen.',translation:'KJV'},
+ {book:'James',chapter:1,verse:5,text:'If any of you lack wisdom, let him ask of God, that giveth to all men liberally, and upbraideth not; and it shall be given him.',translation:'KJV'}
+];
+let notes=[],activeId=null,verses=[],selectedVerse=null,searchResults=[];
+const today=()=>new Date().toISOString().slice(0,10);
+function toast(msg){$('toast').textContent=msg;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',2400)}
+function readJSON(key,fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}}
+function persistNotes(){localStorage.setItem(DB_KEY,JSON.stringify(notes));if(activeId)localStorage.setItem(ACTIVE_KEY,activeId);$('saveStatus').textContent='Saved on this device · '+new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}
+function getForm(){return {id:activeId||('n'+Date.now()),title:$('noteTitle').value,preacher:$('preacher').value,date:$('sermonDate').value,verse:$('mainVerse').value,topic:$('topic').value,text:$('noteText').value,updated:Date.now()}}
+function fillForm(n){activeId=n.id;$('noteTitle').value=n.title||'';$('preacher').value=n.preacher||'';$('sermonDate').value=n.date||today();$('mainVerse').value=n.verse||'';$('topic').value=n.topic||'';$('noteText').value=n.text||'';renderNotes()}
+function saveCurrent(silent=false){let n=getForm();if(!n.title.trim()&&!n.text.trim()&&!n.verse.trim())n.title='Untitled sermon';const idx=notes.findIndex(x=>x.id===n.id);if(idx>=0)notes[idx]=n;else notes.unshift(n);activeId=n.id;persistNotes();renderNotes();if(!silent)toast('Sermon note saved')}
+function newNote(){saveCurrent(true);activeId=null;$('noteTitle').value='';$('preacher').value='';$('sermonDate').value=today();$('mainVerse').value='';$('topic').value='';$('noteText').value='';renderNotes();$('noteTitle').focus()}
+function renderNotes(){const list=$('noteList');list.innerHTML='';$('noteCount').textContent=notes.length+' note'+(notes.length===1?'':'s');notes.slice().sort((a,b)=>b.updated-a.updated).forEach(n=>{const b=document.createElement('button');b.className='note-chip'+(n.id===activeId?' active':'');b.innerHTML='<b></b><span></span>';b.querySelector('b').textContent=n.title||'Untitled sermon';b.querySelector('span').textContent=(n.date||'No date')+' · '+(n.verse||'No scripture');b.onclick=()=>{saveCurrent(true);fillForm(n)};b.oncontextmenu=e=>{e.preventDefault();if(confirm('Delete this sermon note?')){notes=notes.filter(x=>x.id!==n.id);persistNotes();if(activeId===n.id)newNote();renderNotes();toast('Note deleted')}};list.appendChild(b)})}
+function normalizeVerse(v){return {book:String(v.book||v.Book||'').trim(),chapter:Number(v.chapter||v.Chapter||1),verse:Number(v.verse||v.Verse||v.verseNumber||1),text:String(v.text||v.Text||v.content||v.Content||''),translation:String(v.translation||v.Translation||'Imported')}}
+function saveBible(data){const cleaned=data.map(normalizeVerse).filter(v=>v.book&&v.text&&Number.isFinite(v.chapter)&&Number.isFinite(v.verse));if(!cleaned.length)throw Error('No valid verses found. Check the import format.');verses=cleaned;localStorage.setItem(BIBLE_KEY,JSON.stringify(verses));setupBooks();$('bibleSubtitle').textContent=cleaned.length.toLocaleString()+' verses · '+(cleaned[0].translation||'Imported text');toast('Bible imported and saved for offline use');renderChapter()}
+function parseImported(text,ext){if(ext==='json'||text.trim().startsWith('[')||text.trim().startsWith('{')){let d=JSON.parse(text);return Array.isArray(d)?d:(d.verses||d.data||[])}return text.split(/\r?\n/).map(line=>line.trim()).filter(line=>line&&!line.startsWith('#')).map(line=>{let p=line.split('|');if(p.length>=4)return {book:p[0],chapter:p[1],verse:p[2],text:p.slice(3).join('|'),translation:p[4]||'Imported'};let c=line.match(/^(.+?)\s+(\d+):(\d+)\s*[|,]\s*(.+)$/);return c?{book:c[1],chapter:c[2],verse:c[3],text:c[4]}:null}).filter(Boolean)}
+function setupBooks(){const books=[...new Set(verses.map(v=>v.book))];$('bookSelect').innerHTML='<option value="">Choose book</option>'+books.map(b=>`<option value="${escapeAttr(b)}">${escapeHtml(b)}</option>`).join('');if(books.length){$('bookSelect').value=books[0];setupChapters()}}
+function setupChapters(){const book=$('bookSelect').value;const ch=[...new Set(verses.filter(v=>v.book===book).map(v=>v.chapter))].sort((a,b)=>a-b);$('chapterSelect').innerHTML='<option value="">Chapter</option>'+ch.map(c=>`<option value="${c}">${c}</option>`).join('');if(ch.length){$('chapterSelect').value=ch[0];renderChapter()}}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function escapeAttr(s){return escapeHtml(s)}
+function renderChapter(){if(!verses.length)return;const book=$('bookSelect').value,chapter=Number($('chapterSelect').value);if(!book||!chapter)return;searchResults=[];selectedVerse=null;const items=verses.filter(v=>v.book===book&&v.chapter===chapter).sort((a,b)=>a.verse-b.verse);$('bibleContent').innerHTML=`<div class="bible-reference">${escapeHtml(items[0]?.translation||'Imported translation')}</div><h3 class="chapter-heading">${escapeHtml(book)} ${chapter}</h3>`;if(!items.length){$('bibleContent').innerHTML+='<div class="empty">No verses in this chapter in the imported file.</div>';return}items.forEach(v=>appendVerse(v));}
+function appendVerse(v){const p=document.createElement('p');p.className='verse';p.innerHTML=`<sup class="vnum">${v.verse}</sup><span></span>`;p.querySelector('span').textContent=v.text;p.onclick=()=>{selectedVerse=v;p.classList.toggle('selected');$('mainVerse').value=`${v.book} ${v.chapter}:${v.verse}`};p.ondblclick=()=>insertVerse(v);$('bibleContent').appendChild(p)}
+function insertVerse(v){const ref=`${v.book} ${v.chapter}:${v.verse}`;const block=`${ref} (${v.translation||'Imported'})\n“${v.text}”\n`;const area=$('noteText');const start=area.selectionStart,end=area.selectionEnd;area.value=area.value.slice(0,start)+(start&&area.value[start-1]!=='\n'?'\n':'')+block+area.value.slice(end);area.focus();area.selectionStart=area.selectionEnd=start+block.length;saveCurrent(true);toast('Verse added to your notes')}
+function doSearch(){const q=$('searchInput').value.trim().toLowerCase();if(!q)return toast('Type a word or phrase to search');const results=verses.filter(v=>(`${v.book} ${v.chapter}:${v.verse} ${v.text}`).toLowerCase().includes(q)).slice(0,250);searchResults=results;$('bibleContent').innerHTML=`<div class="bible-reference">Search results</div><h3 class="chapter-heading">${results.length}${results.length===250?'+':''} matches</h3>`;if(!results.length){$('bibleContent').innerHTML+='<div class="empty">No matches found in the Bible text currently imported.</div>';return}results.forEach(v=>{const p=document.createElement('p');p.className='verse';p.innerHTML=`<sup class="vnum">${escapeHtml(v.book)} ${v.chapter}:${v.verse}</sup><span></span>`;p.querySelector('span').textContent=v.text;p.onclick=()=>{selectedVerse=v;insertVerse(v)};$('bibleContent').appendChild(p)})}
+function moveChapter(dir){const book=$('bookSelect').value;const ch=[...new Set(verses.filter(v=>v.book===book).map(v=>v.chapter))].sort((a,b)=>a-b);let i=ch.indexOf(Number($('chapterSelect').value));i+=dir;if(i<0){const books=[...new Set(verses.map(v=>v.book))],bi=books.indexOf(book)-1;if(bi<0)return; $('bookSelect').value=books[bi];setupChapters();const prev=[...new Set(verses.filter(v=>v.book===books[bi]).map(v=>v.chapter))].sort((a,b)=>a-b);$('chapterSelect').value=prev.at(-1);renderChapter();return}if(i>=ch.length){const books=[...new Set(verses.map(v=>v.book))],bi=books.indexOf(book)+1;if(bi>=books.length)return;$('bookSelect').value=books[bi];setupChapters();return} $('chapterSelect').value=ch[i];renderChapter()}
+$('newNoteBtn').onclick=newNote;$('saveNoteBtn').onclick=()=>saveCurrent();['noteTitle','preacher','sermonDate','mainVerse','topic','noteText'].forEach(id=>$(id).addEventListener('input',()=>{saveCurrent(true)}));
+$('copyNoteBtn').onclick=async()=>{const n=getForm();const text=`${n.title}\n${n.date} · ${n.preacher}\nScripture: ${n.verse}\nTopic: ${n.topic}\n\n${n.text}`;try{await navigator.clipboard.writeText(text);toast('Notes copied')}catch{toast('Clipboard unavailable — use Export notes')}};
+$('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify({app:'Selah',exportedAt:new Date().toISOString(),notes,bible:verses},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='selah-backup.json';a.click();URL.revokeObjectURL(a.href)};
+$('importBtn').onclick=()=>$('bibleFile').click();$('bibleFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{saveBible(parseImported(await f.text(),f.name.split('.').pop().toLowerCase()))}catch(err){alert('Could not import Bible: '+err.message)}e.target.value=''};
+$('bookSelect').onchange=setupChapters;$('chapterSelect').onchange=renderChapter;$('searchBtn').onclick=doSearch;$('searchInput').onkeydown=e=>{if(e.key==='Enter')doSearch()};$('clearSearch').onclick=()=>{$('searchInput').value='';renderChapter()};$('prevChapter').onclick=()=>moveChapter(-1);$('nextChapter').onclick=()=>moveChapter(1);
+const savedNotes=readJSON(DB_KEY,[]);notes=Array.isArray(savedNotes)?savedNotes:[];const savedBible=readJSON(BIBLE_KEY,null);verses=Array.isArray(savedBible)&&savedBible.length?savedBible:sampleBible;activeId=localStorage.getItem(ACTIVE_KEY);if(notes.length){const n=notes.find(x=>x.id===activeId)||notes[0];fillForm(n)}else{$('sermonDate').value=today();activeId=null}renderNotes();setupBooks();if(!savedBible){$('bibleSubtitle').textContent='Sample KJV verses · import a licensed Bible for full text'}else{$('bibleSubtitle').textContent=verses.length.toLocaleString()+' verses · saved on this device'}
+window.addEventListener('online',()=>{$('onlineStatus').textContent='Online'});window.addEventListener('offline',()=>{$('onlineStatus').textContent='Offline mode'});$('onlineStatus').textContent=navigator.onLine?'Online':'Offline mode';
+if('serviceWorker'in navigator && location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script>
+</body>
+</html>
